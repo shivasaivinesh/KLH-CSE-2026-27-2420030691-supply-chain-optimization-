@@ -1,0 +1,7 @@
+column,q1,q3,iqr,lower_fence,upper_fence,outliers,outlier_pct
+Sales,119.98,299.95,179.97,-149.975,569.905,488,0.27
+Order Item Quantity,1.0,3.0,2.0,-2.0,6.0,0,0.0
+Order Item Profit Ratio,0.08,0.36,0.28,-0.34,0.78,17300,9.58
+Days for shipping (real),2.0,5.0,3.0,-2.5,9.5,0,0.0
+Order Item Discount Rate,0.04,0.16,0.12,-0.14,0.34,0,0.0
+Product Price,50.0,199.99,149.99,-174.985,424.975,2048,1.13

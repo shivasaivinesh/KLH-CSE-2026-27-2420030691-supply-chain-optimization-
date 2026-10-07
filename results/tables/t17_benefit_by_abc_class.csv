@@ -1,0 +1,4 @@
+class,skus,baseline_holding,proposed_holding,baseline_stockouts,proposed_stockouts,demand_units,holding_reduction_pct
+A,311,277729.87,277682.55,117546.5,116969.0,4511257.0,0.02
+B,123,69190.6,70630.76,21913.3,21618.7,852796.0,-2.08
+C,66,27644.84,28448.98,7191.8,7130.2,284173.0,-2.91

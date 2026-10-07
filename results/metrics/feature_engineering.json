@@ -1,0 +1,24 @@
+{
+  "rows": 913000,
+  "features": 57,
+  "calendar_features": 28,
+  "lag_rolling_features": 29,
+  "nan_rows_after_lags": 182000,
+  "top_15_features_vs_target": {
+    "lag_364": 0.932,
+    "lag_7": 0.929,
+    "roll_mean_7": 0.926,
+    "roll_mean_14": 0.925,
+    "lag_14": 0.921,
+    "ewm_28": 0.921,
+    "roll_mean_28": 0.921,
+    "roll_max_7": 0.914,
+    "roll_max_14": 0.913,
+    "lag_21": 0.913,
+    "roll_min_14": 0.909,
+    "roll_max_28": 0.908,
+    "roll_min_28": 0.908,
+    "roll_mean_56": 0.908,
+    "roll_min_7": 0.907
+  }
+}

@@ -1,0 +1,37 @@
+# Machine Learning-Based Predictive Analytics for Supply Chain Optimization
+# Team 15 - KLH University, Bachupally - A.Y. 2026-2027
+#
+# Install with:  pip install -r requirements.txt
+#
+# The pinned major versions are the ones the Review-III results were produced
+# with; newer releases of the same major version work too.
+
+# ---- core data handling ---------------------------------------------------
+pandas>=2.0
+numpy>=1.26
+
+# ---- classical statistics / baselines ------------------------------------
+statsmodels>=0.14
+
+# ---- machine learning ----------------------------------------------------
+scikit-learn>=1.4
+xgboost>=2.0
+lightgbm>=4.0
+scipy>=1.11
+
+# ---- deep learning (LSTM forecast model) ---------------------------------
+torch>=2.2
+
+# ---- explainability ------------------------------------------------------
+shap>=0.45
+
+# ---- visualisation and dashboard -----------------------------------------
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.20
+streamlit>=1.35
+
+# ---- report generation ---------------------------------------------------
+python-docx>=1.1
+python-pptx>=0.6.23
+openpyxl>=3.1

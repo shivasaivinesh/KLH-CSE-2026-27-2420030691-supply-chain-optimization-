@@ -1,0 +1,8 @@
+{
+  "train_windows": 807000,
+  "params": 17861,
+  "one_step_MAE": 6.8762,
+  "one_step_RMSE": 8.9676,
+  "one_step_MAPE": 11.745,
+  "train_sec": 38.9
+}

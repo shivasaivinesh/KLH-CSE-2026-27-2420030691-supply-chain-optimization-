@@ -1,386 +1,230 @@
 # Machine Learning-Based Predictive Analytics for Supply Chain Optimization
 
+**Course:** Engineering Capstone Project – 1 (`23IE4053R` / `23IE4053A`)
+**Department:** Computer Science & Engineering (CSE)
+**Academic Year:** 2026 – 2027 · **Batch 15 — Team 15**
+
 ## Team Members
 
 | Name | ID Number |
 |---|---|
-| Shiva Sai Vinesh | 2420030691 |
-| Harsha Vardhan Reddy | 2420030748 |
-| Venkatesh | 2420030134 |
-| Shashank Reddy | 2420030034 |
+| M. Shiva Sai Vinesh | 2420030691 |
+| R. Harsha Vardhan Reddy | 2420030748 |
+| D. Venkatesh | 2420030134 |
+| A. Shashank Reddy | 2420030034 |
 
-## Supervisor
+**Supervisor:** Dr. K. Swapnika, Dept. of CSE
 
-Dr.K.Swapnika
+---
+
+## Current Phase Status
+
+| Review | Phase | Deliverable | Status |
+|---|---|---|---|
+| Review-I | Phase 1 | Literature review (12 papers), research gaps, objectives, architecture, feasibility, plan | ✅ Completed — `docs/team 15 review.docx` |
+| Review-III | Phases 2–7 | Working implementation, measured benchmark results, explainability, dashboard | ✅ Completed — `docs/Team 15 Review-III.docx` |
+
+**Everything in this repository is reproducible end-to-end with one command:**
+
+```bash
+pip install -r requirements.txt
+python src/fetch_data.py      # ~210 MB of public benchmark data
+python src/run_pipeline.py    # ingest → EDA → features → forecast → risk → optimise → XAI → report
+streamlit run dashboard/app.py
+```
+
+> The report is generated *from* the pipeline artefacts, so the documents can never
+> drift out of sync with the experiments. Every number below is measured, not assumed.
+
+---
 
 ## Abstract
 
-Modern supply chains generate large and complex datasets involving demand signals, inventory levels, supplier performance, transportation conditions, and external factors such as weather and market trends. Traditional supply chain management relies on static rules and historical averages, which struggle to adapt to real-time demand shifts, supplier disruptions, and transportation delays.
+Modern supply chains face volatile demand, inventory imbalance, supplier lead-time
+variability and logistics disruptions. Traditional forecasting — ARIMA, exponential
+smoothing — assumes linearity and stationarity and is unable to exploit promotions,
+seasonality or external disruption signals. This project builds a **unified predictive
+analytics framework** that carries historical and operational data all the way through
+to an actionable prescription.
 
-Therefore, there is a need for a scalable, data-driven predictive analytics framework that can forecast supply chain risks and demand patterns while supporting proactive, informed decision-making.
+The system ingests three public benchmark datasets, performs automated cleaning,
+exploratory analysis and feature engineering (lags, rolling statistics, Fourier
+seasonality, holiday/promotion flags), and trains a model family spanning classical
+statistics, gradient boosting and deep learning. Forecasts are not left as a chart on a
+wall: the predicted demand distribution feeds an inventory optimisation layer that
+computes dynamic safety stock, reorder points and EOQ, while a parallel classifier
+predicts delivery-delay risk. Explainability is delivered through SHAP, and the whole
+pipeline is presented in an interactive Streamlit dashboard.
 
-This project proposes a Unified Predictive Analytics Framework that integrates historical transactional, inventory, supplier, and logistics data using Machine Learning to enable demand forecasting, inventory optimization, and supplier risk prediction. The system aims to provide accurate, data-driven insights that support supply chain planning, resilience, and operational efficiency.
+---
 
-## Problem Statement
+## Measured Results
 
-Supply chains generate large and complex datasets involving demand, inventory levels, supplier performance, transportation times, and pricing.
+### Demand forecasting — 500 store–item series, 184-day recursive rollout
 
-Existing supply chain management approaches often rely on static, rule-based methods that cannot adapt to real-time disruptions or fast-changing demand patterns, resulting in stockouts, excess inventory, and delayed responses to risk.
+| Model | MAPE | MAE | R² |
+|---|---|---|---|
+| **Ensemble (proposed)** | **12.11 %** | **6.46** | **0.928** |
+| LightGBM | 12.11 % | 6.61 | 0.925 |
+| XGBoost | 13.19 % | 7.53 | 0.900 |
+| Random Forest | 14.77 % | 7.13 | 0.915 |
+| SARIMA (statistical baseline) | 19.19 % | 9.57 | 0.824 |
+| Seasonal naive | 26.42 % | 13.30 | 0.677 |
 
-Therefore, there is a need for a scalable Machine Learning-based framework that can predict supply chain risks and demand fluctuations while enabling proactive, data-driven decision-making.
+Scored on **identical** SKUs and dates. Evaluation is a genuine recursive multi-step
+rollout — each model feeds back its own predictions as the lag inputs, so no
+ground-truth value from inside the test window is ever used. **36.9 % lower MAPE than
+SARIMA**, against a Review-I target of ≥ 25 %.
 
-## Project Objectives
+Engineered lag/rolling features are worth a **32.8 % MAPE reduction** over
+calendar-only features (ablation study). The LSTM reaches 11.75 % one-step MAPE with
+17,861 parameters.
 
-* To develop machine learning models for forecasting demand and predicting supply chain disruptions using historical business data.
-* To identify and visualize important supply chain trends, patterns, and risk factors through comprehensive data analysis.
-* To use predictive analytics techniques to optimize inventory levels and identify supplier and logistics risk.
-* To develop a Unified Predictive Analytics Framework that integrates demand, inventory, supplier, and transportation data using Machine Learning.
-* To provide clear, data-driven insights that support supply chain planning and proactive decision-making.
+### Delay-risk and lead-time prediction (DataCo, temporal hold-out)
 
-## Proposed Work and Uniqueness
+| Model | F1 | ROC-AUC | Recall |
+|---|---|---|---|
+| Random Forest | 0.694 → **0.722** at the tuned threshold | 0.769 | 0.539 → 0.671 |
+| XGBoost | 0.665 | 0.764 | 0.541 |
+| Logistic Regression | 0.657 | 0.743 | 0.539 |
 
-The proposed system:
+Lead-time prediction: **MAE 0.96 days**; the measured residual variability
+**σ_L = 1.27 days** is fed directly into the safety-stock formula. The Review-I target
+of F1 ≥ 0.85 is **not met** and this is documented with a diagnosis in the report.
 
-* Combines demand forecasting, inventory optimization, and supplier risk analysis in one system.
-* Uses multiple supply chain factors instead of focusing on a single function in isolation.
-* Integrates Machine Learning models across forecasting, classification, and optimization tasks.
-* Provides comparative evaluation of models to identify which factors and techniques drive the most accurate predictions.
-* Aims to provide early-warning insights for real-world supply chain decision-making.
-* Integrates multiple supply chain data sources through a Unified Predictive Analytics Framework.
+### Inventory optimisation — forecast to prescription
 
-## System Architecture
+Three policies are compared under the **same realised demand** and the **same
+lead-time random draws** (common random numbers), at a **service-matched** operating
+point:
 
-```
-Supply Chain Data Sources
-              |
-              v
-      Data Collection
-              |
-              v
-    Data Cleaning & Integration
-              |
-              v
-      Data Processing
-              |
-              v
-   Exploratory Data Analysis
-              |
-              v
-      ML / DL Models
-              |
-              v
-   Demand & Risk Prediction
-              |
-              v
-     Risk Classification
-      Low / Medium / High
-              |
-              v
-   Feature Importance Analysis
-              |
-              v
-  Supply Chain Insights Dashboard
-```
-
-## Benchmark Datasets
-
-The project uses a multi-source approach to collect supply chain information.
-
-**Dataset 1 – Online Retail / Transactional Dataset**
-
-Purpose:
-* Order history
-* SKU-level demand
-* Sales trends
-
-**Dataset 2 – Inventory and Warehouse Data**
-
-Contains:
-* Stock levels
-* Reorder points
-* Lead times
-
-**Dataset 3 – Supplier and Logistics Data**
-
-Contains:
-* Supplier delivery performance
-* Transportation times
-* Delay records
-
-## Dataset Integration
-
-The collected datasets will be cleaned, integrated, preprocessed, and analysed to identify supply chain patterns and support demand and risk prediction.
-
-```
-Transactional Data
-       +
-Inventory Data
-       +
-Supplier & Logistics Data
-       |
-       v
-Unified Supply Chain Dataset
-       |
-       v
-Data Cleaning & Integration
-       |
-       v
-Demand & Risk Analysis
-```
-
-## Technologies and Tools
-
-**Programming**
-* Python
-
-**Data Processing**
-* Pandas
-* NumPy
-
-**Machine Learning**
-* Scikit-learn
-* Random Forest
-* XGBoost
-* LightGBM
-* CatBoost
-
-**Deep Learning**
-* LSTM
-* Other suitable deep-learning models when required
-
-**Visualization and Dashboard**
-* Streamlit
-* Power BI
-* Python visualization libraries
-
-**Development Environment**
-* Local system
-* Google Colab
-
-## Project Plan
-
-**Phase 1 – Literature Review**
-Study 10–15 recent research papers. Identify limitations and research gaps.
-Status: Completed / Review-1
-
-**Phase 2 – Dataset Collection**
-Collect demand, inventory, and supplier datasets. Perform data cleaning and integration.
-Status: Next Phase
-
-**Phase 3 – Data Processing**
-Perform preprocessing and exploratory analysis.
-Status: Planned
-
-**Phase 4 – Model Development**
-Train multiple ML/DL models. Compare prediction performance.
-Status: Planned
-
-**Phase 5 – Risk & Inventory Analysis**
-Develop risk categories such as Low, Medium, High. Analyze factors responsible for each risk.
-Status: Planned
-
-**Phase 6 – Visualization**
-Build a dashboard showing predictions, trends, and risk levels.
-Status: Planned
-
-**Phase 7 – Evaluation & Documentation**
-Compare models. Validate results. Document findings and prepare research paper.
-Status: Planned
-
-## Project Phase Status
-
-| Phase | Description | Status |
+| Experiment | Question | Result |
 |---|---|---|
-| Phase 1 | Literature Review | Completed / Review-1 |
-| Phase 2 | Dataset Collection | Next Phase |
-| Phase 3 | Data Processing | Planned |
-| Phase 4 | Model Development | Planned |
-| Phase 5 | Risk & Inventory Analysis | Planned |
-| Phase 6 | Visualization | Planned |
-| Phase 7 | Evaluation & Documentation | Planned |
+| **E1** | Value of the forecast alone (same formula both sides) | total cost **−3.07 %**, stock-outs **−3.50 %** |
+| **E2** | As-designed risk-aware policy vs traditional practice | total cost **−2.12 %**, holding cost +0.59 %, stock-outs −0.64 % |
+| **E3** | **Lead-time disruption** (3× measured variability) | stock-outs **−25.0 %**, total cost **−13.5 %**, fill rate 95.14 % → 96.36 % |
 
-## Research Gap
+**Honest negative result:** the Review-I target of a 15–20 % *holding-cost* reduction is
+**not achieved**. At equal service level the forecast-driven policy's holding cost is
+essentially unchanged (or slightly higher) — a better forecast gives leverage on
+stock-outs and resilience, not on cycle stock. The report explains why rather than
+quietly dropping the claim.
 
-The project addresses the following research gaps:
+### Explainability
 
-* Many supply chain prediction models focus primarily on accuracy rather than practical decision support.
-* Several ML-based supply chain models are evaluated in isolation rather than across integrated functions (demand, inventory, supplier risk).
-* Existing studies often focus on one supply chain function rather than combining multiple factors.
-* Large-scale heterogeneous supply chain datasets create challenges in data integration and quality.
-* Limited research combines demand forecasting, inventory optimization, and supplier risk prediction in a single framework.
-* Many studies evaluate models technically but provide limited guidance on which factors drive predicted risk or demand shifts.
+SHAP beeswarm/dependence plots for the forecasting model, global and **local**
+attributions for the delay-risk classifier, and a what-if simulator. Notably the
+what-if study shows the synthetic promotion flag moves the forecast by 0.0 % — the model
+correctly ignores a signal that does not exist in the data, and this is reported as a
+data limitation rather than a model failure.
 
-## Risk Analysis
-
-The system will classify supply chain risks into categories such as:
-
-* Low Risk
-* Medium Risk
-* High Risk
-
-The system will also analyse the factors responsible for each predicted risk level, such as supplier delay history, demand volatility, and transportation conditions.
-
-## Dashboard
-
-The proposed interactive dashboard will display:
-
-* Demand trends
-* Inventory levels
-* Risk predictions
-* Risk levels
-* Important contributing factors
-* Supply chain patterns
-* Analytical insights
-
-The dashboard may be implemented using Streamlit or Power BI.
-
-## Setup and Execution
-
-**1. Clone the Repository**
-
-```
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd <YOUR_REPOSITORY_NAME>
-```
-
-**2. Create a Virtual Environment**
-
-```
-python -m venv venv
-```
-
-**3. Activate the Virtual Environment**
-
-For Windows:
-```
-venv\Scripts\activate
-```
-
-For Linux/macOS:
-```
-source venv/bin/activate
-```
-
-**4. Install Dependencies**
-
-If a requirements.txt file is available:
-```
-pip install -r requirements.txt
-```
-
-Otherwise, install the major project dependencies:
-```
-pip install pandas numpy scikit-learn xgboost lightgbm catboost matplotlib streamlit
-```
-
-**5. Add Datasets**
-
-Place the downloaded datasets inside the appropriate directories:
-
-```
-data/
-├── transactional/
-├── inventory/
-├── supplier_logistics/
-└── processed/
-```
-
-**6. Perform Preprocessing**
-
-```
-python <preprocessing_script>.py
-```
-
-**7. Run the Machine Learning Models**
-
-```
-python <model_script>.py
-```
-
-**8. Run the Dashboard**
-
-For Streamlit:
-```
-streamlit run app.py
-```
-
-If Power BI is used, load the processed dataset into Power BI and open the dashboard/report.
+---
 
 ## Repository Structure
 
 ```
-project-root/
-│
-├── README.md
-├── data/
-│   ├── transactional/
-│   │   ├── orders/
-│   │   ├── demand/
-│   │   └── sales/
-│   │
-│   ├── inventory/
-│   │   ├── stock_levels/
-│   │   ├── reorder_points/
-│   │   └── lead_times/
-│   │
-│   ├── supplier_logistics/
-│   │   ├── delivery_performance/
-│   │   ├── transportation/
-│   │   └── delays/
-│   │
-│   └── processed/
-│
-├── notebooks/
-│   ├── data_analysis/
-│   ├── eda/
-│   └── experiments/
-│
-├── src/
-│   ├── preprocessing/
-│   ├── models/
-│   └── risk_analysis/
-│
-├── dashboard/
-├── results/
-├── docs/
+KLH-CSE-2026-27-2420030691-supply-chain-optimization-/
+├── README.md                       ← you are here
 ├── requirements.txt
-└── app.py
+├── .gitignore                      ← keeps the ~210 MB of raw data out of Git
+│
+├── src/                            ← the entire reproducible pipeline
+│   ├── config.py                   ← central paths, seeds, cost parameters
+│   ├── fetch_data.py               ← downloads the 3 public benchmark datasets
+│   ├── data_ingest.py              ← M1: cleaning, validation, PII removal
+│   ├── eda.py                      ← M2: 12 EDA techniques + ABC + STL + RFM
+│   ├── features.py                 ← M2b: 57 engineered features
+│   ├── models_forecast.py          ← M3: SARIMA, RF, XGB, LightGBM, ensemble + rollouts
+│   ├── models_dl.py                ← M3b: global LSTM with SKU embeddings
+│   ├── models_risk.py              ← M5: delay-risk classifier + lead-time regression
+│   ├── optimization.py             ← M4: safety stock / ROP / EOQ + policy simulation
+│   ├── explain.py                  ← M6: SHAP + what-if simulator
+│   ├── make_demo_bundle.py         ← small committed artefacts for the dashboard
+│   ├── generate_report.py          ← renders the DOCX / PPTX / Markdown deliverables
+│   └── run_pipeline.py             ← one-command orchestrator
+│
+├── dashboard/app.py                ← M7: 5-tab Streamlit decision-support app
+│
+├── results/
+│   ├── figures/                    ← 26 generated figures (f03 … f28)
+│   ├── metrics/                    ← JSON metric files per module
+│   ├── tables/                     ← 20 generated CSV tables
+│   └── demo/                       ← small bundle so the dashboard runs without raw data
+│
+├── docs/                           ← submission documents
+│   ├── team 15 review.docx         ← Review-I
+│   ├── Team 15 Review-III.docx     ← Review-III report (generated)
+│   ├── team 15 review-III ppt.pptx ← Review-III deck (generated)
+│   ├── team 15 abstarct.docx       ← abstract submission
+│   └── Team 15 Roadmap.docx        ← supervisor roadmap
+│
+├── reports/                        ← Review-III report copies + README
+│   ├── Review_III_Report.docx
+│   └── Review_III_Report.md
+│
+└── data/                           ← NOT versioned (see data/README.md)
+    ├── raw/                        ← populated by fetch_data.py
+    └── processed/                  ← intermediate cleaned / feature tables
 ```
 
-## Literature Review
+---
 
-The literature review focuses on the following areas:
+## Dashboard
 
-* Demand Forecasting using AI/ML
-* Big Data for Supply Chain Analysis
-* Inventory Optimization Techniques
-* Supplier Risk Prediction
-* Transportation and Delivery Time Prediction
-* Supply Chain Time-Series Forecasting
-* IoT and Predictive Maintenance for Logistics
+Five tabs, all driven by the pipeline artefacts:
 
-The literature review identifies the limitation that many existing approaches focus on a single supply chain function while providing limited integration of demand forecasting, inventory optimization, and supplier risk assessment.
+1. **Executive overview** — integrated dataset KPIs, pipeline diagram, cross-dataset evidence
+2. **Demand forecast** — SKU/horizon selector, forecast vs actual, per-SKU scoreboard
+3. **Inventory optimization** — policy comparison, cost impact, filterable reorder recommendations
+4. **Supply-chain risk** — classifier scoreboard, lead-time model, **live order risk calculator**
+5. **Explainability** — SHAP attributions and the what-if simulator
 
-## Current Project Status
+---
 
-**Current Phase:** Phase 1 – Literature Review / Review-1
+## Datasets
 
-**Completed**
-* Problem statement
-* Project objectives
-* Initial literature review
-* Research gap identification
-* Proposed work and uniqueness
-* Initial system architecture
-* Benchmark dataset identification
-* Project phase planning
+| ID | Dataset | Size used | Role |
+|---|---|---|---|
+| D1 | DataCo Smart Supply Chain (Kaggle) | 180,519 orders | delay risk, lead-time σ_L |
+| D2 | Store Item Demand Forecasting (Kaggle) | 913,000 daily rows, 500 series | demand forecasting, inventory simulation |
+| D3 | UCI Online Retail II (UCI ML Repo #502) | 1,002,800 clean sales lines, 4,899 SKUs | ABC/Pareto, RFM, price behaviour |
 
-**Next Step**
+Full provenance, cleaning decisions and layout: [`data/README.md`](data/README.md).
 
-Phase 2 – Dataset Collection
+---
 
-The next stage will focus on collecting transactional, inventory, and supplier/logistics datasets, followed by data cleaning and integration.
+## Module Status
 
-## License
+| Module | Description | Status |
+|---|---|---|
+| M1 | Data ingestion, validation, cleaning | ✅ 3 datasets integrated |
+| M2 | EDA — 12 techniques + ABC + STL + RFM | ✅ 11 figures |
+| M2b | Feature engineering | ✅ 57 features + 28-day sequence block |
+| M3 | Demand forecasting (SARIMA/RF/XGB/LGBM/LSTM/ensemble) | ✅ 36.9 % better than SARIMA |
+| M4 | Inventory optimisation (SS/ROP/EOQ + simulation) | ✅ with an honest negative result documented |
+| M5 | Delay-risk + lead-time prediction | ✅ F1 0.722, σ_L measured |
+| M6 | Explainability (SHAP + what-if) | ✅ global + local |
+| M7 | Streamlit dashboard | ✅ 5 tabs, live risk calculator |
+| — | TFT (Temporal Fusion Transformer) | ⏳ next phase |
 
-This project is developed for academic and research purposes.
+---
+
+## Known Limitations (carried openly into the report)
+
+* **TFT not yet trained** — the LSTM covers the deep-learning branch.
+* **Delay-risk F1 is 0.722, not ≥ 0.85** — the temporal split puts the most disrupted
+  quarter in the test set; remedies are planned.
+* **Holding-cost reduction of 15–20 % was not achieved** — the simulation shows the
+  target was arithmetically optimistic for this demand regime.
+* **Promotion flag is a synthetic proxy** — D2 has no promotion column, and the what-if
+  study confirms it carries no signal.
+* **Uniform cost parameters** across SKUs pending per-family calibration.
+* **SARIMA benchmarked on 12 representative series**, with all models re-scored on that
+  matched subset.
+
+---
+
+## Licence
+
+Developed for academic and research purposes. All datasets are public benchmarks; no
+proprietary or confidential data is stored in this repository.

@@ -1,0 +1,80 @@
+{
+  "forecaster": {
+    "top_features": {
+      "lag_364": 6.4649,
+      "roll_mean_7": 5.6656,
+      "roll_mean_14": 4.1918,
+      "dow": 2.7728,
+      "lag_7": 2.2835,
+      "roll_mean_56": 1.4428,
+      "roll_mean_28": 1.2967,
+      "item_mean_all": 1.2786,
+      "year_sin_1": 0.8107,
+      "year_cos_1": 0.7882,
+      "store_factor": 0.7166,
+      "week_sin_1": 0.6778,
+      "rolling_trend": 0.6321,
+      "day": 0.4691,
+      "month": 0.4671
+    },
+    "whatif": [
+      {
+        "scenario": "baseline",
+        "mean_forecast_units": 53.831,
+        "mean_delta_units": 0.0,
+        "mean_delta_pct": 0.0,
+        "pct_skus_increase": 0.0
+      },
+      {
+        "scenario": "promotion ON",
+        "mean_forecast_units": 53.831,
+        "mean_delta_units": 0.0,
+        "mean_delta_pct": 0.0,
+        "pct_skus_increase": 0.0
+      },
+      {
+        "scenario": "holiday ON",
+        "mean_forecast_units": 53.86,
+        "mean_delta_units": 0.029,
+        "mean_delta_pct": 0.053,
+        "pct_skus_increase": 47.3
+      },
+      {
+        "scenario": "demand shock +25%",
+        "mean_forecast_units": 60.106,
+        "mean_delta_units": 6.275,
+        "mean_delta_pct": 11.656,
+        "pct_skus_increase": 100.0
+      },
+      {
+        "scenario": "demand drop -20%",
+        "mean_forecast_units": 47.809,
+        "mean_delta_units": -6.022,
+        "mean_delta_pct": -11.186,
+        "pct_skus_increase": 0.0
+      }
+    ],
+    "n_explained": 3000
+  },
+  "risk": {
+    "top_features": {
+      "Days for shipment (scheduled)": 0.7458599805831909,
+      "Shipping Mode_First Class": 0.5357999801635742,
+      "Type_TRANSFER": 0.3608599901199341,
+      "order_hour": 0.20093999803066254,
+      "Shipping Mode_Standard Class": 0.15892000496387482,
+      "Latitude": 0.10068999975919724,
+      "Shipping Mode_Second Class": 0.08889000117778778,
+      "Longitude": 0.08045999705791473,
+      "Type_DEBIT": 0.05316999927163124,
+      "Type_PAYMENT": 0.04625999927520752,
+      "order_dow": 0.037370000034570694,
+      "Shipping Mode_Same Day": 0.03491999953985214,
+      "order_month": 0.02995000034570694,
+      "Order Item Profit Ratio": 0.026799999177455902,
+      "Market_LATAM": 0.02280000038444996
+    },
+    "local": "local explanations for orders #3820 (P_late=0.999) and #3751 (P_late=0.001)"
+  },
+  "runtime_sec": 117.8
+}

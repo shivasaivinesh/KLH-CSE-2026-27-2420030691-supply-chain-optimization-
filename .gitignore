@@ -1,0 +1,25 @@
+# ---- raw and processed data ----------------------------------------------
+# The three benchmark datasets total ~210 MB and are deliberately NOT versioned.
+# Fetch them reproducibly with:  python src/fetch_data.py
+data/raw/
+data/processed/
+*.csv.gz
+
+# ---- environment ----------------------------------------------------------
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+
+# ---- model artefacts and intermediates -----------------------------------
+*.joblib
+*.npy
+streamlit.log
+nohup.out
+
+# ---- office temp files ---------------------------------------------------
+~$*.docx
+~$*.pptx

@@ -1,0 +1,6 @@
+scenario,mean_forecast_units,mean_delta_units,mean_delta_pct,pct_skus_increase
+baseline,53.831,0.0,0.0,0.0
+promotion ON,53.831,0.0,0.0,0.0
+holiday ON,53.86,0.029,0.053,47.3
+demand shock +25%,60.106,6.275,11.656,100.0
+demand drop -20%,47.809,-6.022,-11.186,0.0
