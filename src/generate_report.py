@@ -55,6 +55,15 @@ def cload(name: str) -> pd.DataFrame:
     return pd.read_csv(p) if p.exists() else pd.DataFrame()
 
 
+def down(v, nd=2, suffix="%"):
+    """Pipeline convention: a positive reduction value means 'down by v'."""
+    try:
+        v = float(v)
+    except (TypeError, ValueError):
+        return "n/a"
+    return f"down {abs(v):.{nd}f} {suffix}" if v >= 0 else f"up {abs(v):.{nd}f} {suffix}"
+
+
 def fmt(v, nd=3):
     try:
         return f"{float(v):,.{nd}f}"
@@ -94,6 +103,11 @@ def patch_template(src: Path, dst: Path, review_label: str = "III") -> None:
                             break
                         xml = xml[:j] + f"<w:t>{review_label}</w:t>" + xml[j + len("<w:t>I</w:t>"):]
                         pos = j + 1
+                # the Review-I template also carries the review label in the
+                # running footer and in body text boxes - keep them consistent
+                xml = xml.replace("Review-I Assessment Document",
+                                  f"Review-{review_label} Assessment Document")
+                xml = xml.replace("Review-I", f"Review-{review_label}")
                 data = xml.encode("utf-8")
             zout.writestr(item, data)
 
@@ -592,21 +606,21 @@ def build_docx(out_path: Path) -> None:
         {"Experiment": "E1 - isolates the forecast",
          "Setup": "Both policies use the identical demand-variability formula; only the input differs "
                   "(ML forecast vs historical average)",
-         "Result": f"holding {e1.get('holding_cost_reduction_pct', 0):+.2f}%, stock-outs "
-                   f"{e1.get('stockout_units_reduction_pct', 0):+.2f}%, total cost "
-                   f"{e1.get('total_cost_reduction_pct', 0):+.2f}% (service-matched)"},
+         "Result": f"holding cost {down(e1.get('holding_cost_reduction_pct', 0))}, stock-outs "
+                   f"{down(e1.get('stockout_units_reduction_pct', 0))}, total cost "
+                   f"{down(e1.get('total_cost_reduction_pct', 0))} (service-matched)"},
         {"Experiment": "E2 - the as-designed policy",
          "Setup": "Forecast + measured lead-time variability vs traditional practice",
-         "Result": f"holding {e2.get('holding_cost_reduction_pct', 0):+.2f}%, stock-outs "
-                   f"{e2.get('stockout_units_reduction_pct', 0):+.2f}%, total cost "
-                   f"{e2.get('total_cost_reduction_pct', 0):+.2f}% (service-matched)"},
+         "Result": f"holding cost {down(e2.get('holding_cost_reduction_pct', 0))}, stock-outs "
+                   f"{down(e2.get('stockout_units_reduction_pct', 0))}, total cost "
+                   f"{down(e2.get('total_cost_reduction_pct', 0))} (service-matched)"},
         {"Experiment": "E3 - lead-time disruption",
          "Setup": f"Lead times drawn at 3x the measured variability "
                   f"(sigma_L = {e3.get('disruption_sigma_L_days', 0):.2f} days); design z = 1.645",
          "Result": f"fill rate {e3.get('traditional_fill_rate_pct', 0):.2f}% -> "
-                   f"{e3.get('risk_aware_fill_rate_pct', 0):.2f}%, stock-outs down "
-                   f"{e3.get('stockout_reduction_pct', 0):.1f}%, total cost down "
-                   f"{e3.get('total_cost_reduction_pct', 0):.1f}%"},
+                   f"{e3.get('risk_aware_fill_rate_pct', 0):.2f}%, stock-outs "
+                   f"{down(e3.get('stockout_reduction_pct', 0), 1)}, total cost "
+                   f"{down(e3.get('total_cost_reduction_pct', 0), 1)}"},
     ]), "Table 12 — Controlled experiments on the value of the forecast and of lead-time risk",
         max_rows=6, font_size=7.5)
 
@@ -638,7 +652,7 @@ def build_docx(out_path: Path) -> None:
                                            "baseline_stockouts": "Traditional stock-outs",
                                            "proposed_stockouts": "Proposed stock-outs",
                                            "demand_units": "Demand (units)",
-                                           "holding_reduction_pct": "Holding change %"}),
+                                           "holding_reduction_pct": "Holding cost change (positive = saving)"}),
                   "Table 13 — Where the effect lands, by ABC class (service-matched comparison)",
                   max_rows=6, font_size=8)
     sw = cload("t19_service_level_sweep.csv")
@@ -901,10 +915,19 @@ def build_pptx(out_path: Path) -> None:
     oimp = op.get("improvement_pct", {})
     match = pd.DataFrame(fc.get("matched_subset_comparison", []))
     cls_df = pd.DataFrame(rk.get("classifiers", []))
+    lt_df_p = pd.DataFrame(rk.get("lead_time_regression", []))
+    ms = op.get("matched_service_comparison", {})
+    e1 = op.get("experiment_E1_forecast_only", {})
+    e2 = op.get("experiment_E2_risk_aware", {})
+    e3 = op.get("experiment_E3_lead_time_disruption", {})
 
     src = DOCS / "team 15 ppt.pptx"
     prs = Presentation(str(src)) if False else Presentation()
     blank = prs.slide_layouts[5] if len(prs.slide_layouts) > 5 else prs.slide_layouts[0]
+
+    def down(v, nd=2, suffix=" %"):
+        """Pipeline convention: a positive value means a reduction."""
+        return f"down {abs(v):.{nd}f}{suffix}" if v >= 0 else f"up {abs(v):.{nd}f}{suffix}"
 
     def slide(title, bullets=None, image=None, subtitle=None):
         s = prs.slides.add_slide(blank)
@@ -943,10 +966,13 @@ def build_pptx(out_path: Path) -> None:
            f"Full pipeline implemented: ingest → EDA → features → forecasting → risk → optimisation → XAI → dashboard",
            f"Best ML model MAPE {match.iloc[0]['MAPE']:.2f} % vs SARIMA {match[match['model'] == 'SARIMA'].iloc[0]['MAPE']:.2f} % on identical test rows"
            if not match.empty else "Model comparison complete",
-           f"MAPE reduction vs statistical baseline: {imp.get('best_ml_vs_SARIMA_MAPE_reduction_pct', 0):.1f} %",
-           f"Inventory holding cost {oimp.get('holding_cost_reduction', 0):+.1f} %, stock-outs "
-           f"{oimp.get('stockout_units_reduction', 0):+.1f} %, fill rate "
-           f"{op.get('policy_comparison', {}).get('proposed_ml', {}).get('fill_rate_pct', 0):.2f} %"])
+           f"MAPE reduction vs statistical baseline: "
+           f"{imp.get('best_ml_vs_SARIMA_MAPE_reduction_pct', 0):.1f} % lower error",
+           f"Inventory: total cost {down(ms.get('total_cost_reduction', 0), 1)} at matched service; "
+           f"stock-outs {down(e3.get('stockout_reduction_pct', 0), 0)} under a lead-time disruption",
+           "Delay risk: F1 %.3f (target 0.85 not met - documented); lead-time sigma_L = %.2f days measured "
+           "on DataCo" % (rk.get("operational_threshold", {}).get("f1", 0),
+                          rk.get("sigma_lead_time_days", 0))])
 
     slide("Architecture as Implemented",
           ["Tier 1 Data: src/fetch_data.py + src/data_ingest.py (D1 DataCo, D2 Store-Item Demand, D3 Online Retail II)",
@@ -977,13 +1003,19 @@ def build_pptx(out_path: Path) -> None:
           image=FIG / "f17_delay_risk_models.png")
 
     slide("Forecast-to-Prescription Inventory Optimisation",
-          [f"Same demand and same lead-time draws for both policies (common random numbers)",
-           f"Holding cost {oimp.get('holding_cost_reduction', 0):+.1f} %, stock-outs {oimp.get('stockout_units_reduction', 0):+.1f} %, "
-           f"total cost {oimp.get('total_cost_reduction', 0):+.1f} %",
-           f"Service level (fill rate) {op.get('policy_comparison', {}).get('proposed_ml', {}).get('fill_rate_pct', 0):.2f} % "
-           f"vs {op.get('policy_comparison', {}).get('baseline_static', {}).get('fill_rate_pct', 0):.2f} % for the static policy",
-           "Benefit concentrated in class-A SKUs — directly actionable deployment insight",
-           "Outputs per-SKU safety stock, ROP, EOQ, days of cover and reorder alerts"],
+          [f"Controlled study: both policies face identical demand and identical lead-time draws",
+           f"E1 - forecast alone (same formula both sides): total cost "
+           f"{down(e1.get('total_cost_reduction_pct', 0))}, stock-outs "
+           f"{down(e1.get('stockout_units_reduction_pct', 0))}",
+           f"E2 - as-designed risk-aware policy vs traditional practice: total cost "
+           f"{down(e2.get('total_cost_reduction_pct', 0))} at matched service",
+           f"E3 - LEAD-TIME DISRUPTION (3x variability): fill rate "
+           f"{e3.get('traditional_fill_rate_pct', 0):.2f} % -> {e3.get('risk_aware_fill_rate_pct', 0):.2f} %, "
+           f"stock-outs {down(e3.get('stockout_reduction_pct', 0), 1)}, total cost "
+           f"{down(e3.get('total_cost_reduction_pct', 0), 1)}",
+           f"HONEST NEGATIVE RESULT: the 15-20 % holding-cost target is NOT met "
+           f"(holding cost {down(ms.get('holding_cost_reduction', 0), 2)} at matched service) - "
+           f"a better forecast buys resilience, not cycle-stock savings"],
           image=FIG / "f20_inventory_policies.png")
 
     slide("Explainable AI and Decision Support",
@@ -996,14 +1028,17 @@ def build_pptx(out_path: Path) -> None:
 
     slide("Objectives vs. Achieved Results",
           [f"O1 forecasting: MAPE {match.iloc[0]['MAPE']:.2f} % and "
-           f"{imp.get('best_ml_vs_SARIMA_MAPE_reduction_pct', 0):.1f} % better than SARIMA — target ≥25 % ACHIEVED"
-           if not match.empty else "O1 complete",
-           f"O2 inventory: holding {oimp.get('holding_cost_reduction', 0):+.1f} %, stock-outs "
-           f"{oimp.get('stockout_units_reduction', 0):+.1f} % — ACHIEVED",
-           f"O3 risk: F1 {rk.get('operational_threshold', {}).get('f1', 0):.3f} — target 0.85, PARTIALLY achieved (documented)",
-           "O4 dashboard: 7 modules delivered — ACHIEVED",
-           "O5 benchmarking: 3 datasets, temporal hold-out, ablation, matched subset — ACHIEVED",
-           "O6 reproducibility: one-command pipeline with fixed seeds — ACHIEVED"])
+           f"{imp.get('best_ml_vs_SARIMA_MAPE_reduction_pct', 0):.1f} % better than SARIMA - "
+           f"target >=25 % ACHIEVED" if not match.empty else "O1 complete",
+           f"O2 inventory: total cost {down(ms.get('total_cost_reduction', 0))} at matched service, "
+           f"stock-outs {down(e3.get('stockout_reduction_pct', 0), 0)} under disruption - "
+           f"PARTIALLY ACHIEVED (holding-cost target not met, documented)",
+           f"O3 risk: F1 {rk.get('operational_threshold', {}).get('f1', 0):.3f} - target 0.85, "
+           f"PARTIALLY ACHIEVED (cause diagnosed)",
+           "O4 dashboard: 5-tab Streamlit app with a live risk calculator - ACHIEVED",
+           "O5 benchmarking: 3 datasets, temporal hold-out, ablation, matched subset, "
+           "service-matched policy study - ACHIEVED",
+           "O6 reproducibility: one-command pipeline with fixed seeds and auto-generated report - ACHIEVED"])
 
     slide("Next Phase",
           ["Temporal Fusion Transformer (pytorch-forecasting) added to the ensemble with attention-based interpretation",
