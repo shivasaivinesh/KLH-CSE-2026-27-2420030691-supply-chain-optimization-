@@ -1,0 +1,276 @@
+,0
+Days for shipment (scheduled),0.74586
+Shipping Mode_First Class,0.5358
+Type_TRANSFER,0.36086
+order_hour,0.20094
+Shipping Mode_Standard Class,0.15892
+Latitude,0.10069
+Shipping Mode_Second Class,0.08889
+Longitude,0.08046
+Type_DEBIT,0.05317
+Type_PAYMENT,0.04626
+order_dow,0.03737
+Shipping Mode_Same Day,0.03492
+order_month,0.02995
+Order Item Profit Ratio,0.0268
+Market_LATAM,0.0228
+Order Item Discount Rate,0.02194
+Type_CASH,0.01949
+Sales,0.01521
+Order Country_Cuba,0.01493
+Customer Segment_Corporate,0.01432
+Customer Segment_Consumer,0.01421
+Order Country_El Salvador,0.01291
+Order Region_Central America,0.01267
+Order Country_Honduras,0.01188
+Order Region_South America,0.01187
+Order Country_México,0.01148
+Customer Segment_Home Office,0.00987
+Product Price,0.00816
+Order Country_Brasil,0.00717
+Order Region_Caribbean,0.00588
+Order Country_Nicaragua,0.00565
+Order Country_República Dominicana,0.00561
+Order Country_Colombia,0.00539
+Order Country_Panamá,0.00531
+Order Item Quantity,0.00484
+Category Name_Men's Footwear,0.00421
+Category Name_Cleats,0.00417
+Department Name_Outdoors,0.00414
+Category Name_Women's Apparel,0.00412
+Order Country_Ecuador,0.00407
+Order Country_Paraguay,0.00403
+Order Country_Alemania,0.00394
+Order Country_Guatemala,0.00384
+Market_Pacific Asia,0.00359
+Order Region_Western Europe,0.00336
+Order Country_Australia,0.00335
+Market_Europe,0.00334
+Department Name_Golf,0.00333
+Order Region_West of USA ,0.00294
+Order Country_Estados Unidos,0.00288
+Order Region_East of USA,0.00262
+Order Country_Venezuela,0.00256
+Order Country_Perú,0.00248
+Order Country_Argentina,0.00243
+Order Country_Italia,0.00237
+Category Name_Cardio Equipment,0.00235
+Order Region_South of  USA ,0.00235
+Order Country_República Democrática del Congo,0.00224
+Order Country_Chile,0.00209
+Market_USCA,0.00206
+Order Region_US Center ,0.00206
+Order Country_Trinidad y Tobago,0.00206
+Order Country_Reino Unido,0.00206
+Order Region_Oceania,0.00206
+Order Country_Francia,0.00205
+Order Country_Haití,0.00203
+Order Region_Northern Europe,0.00189
+Order Region_Eastern Asia,0.00177
+Order Region_Canada,0.00173
+Order Region_Eastern Europe,0.00171
+Order Region_South Asia,0.0017
+Order Country_España,0.00168
+Order Country_Indonesia,0.00165
+Market_Africa,0.00165
+Category Name_Indoor/Outdoor Games,0.00164
+Order Country_Bolivia,0.00149
+Order Country_China,0.00147
+Order Country_Suecia,0.0014
+Order Region_Southeast Asia,0.00139
+Department Name_Fan Shop,0.00127
+Department Name_Footwear,0.00126
+Order Country_Irak,0.00125
+Order Country_Turquía,0.00125
+Order Country_India,0.00121
+Order Region_Central Africa,0.00121
+Order Country_Malasia,0.00119
+Category Name_Water Sports,0.00117
+Order Region_West Asia,0.00113
+Order Region_West Africa,0.00112
+Category Name_Camping & Hiking,0.00106
+Department Name_Apparel,0.00103
+Order Region_East Africa,0.00101
+Order Country_Irán,0.001
+Order Country_Camerún,0.00098
+Order Country_Arabia Saudí,0.00096
+Order Country_Egipto,0.00095
+Order Country_Nueva Zelanda,0.00093
+Order Country_Polonia,0.00091
+Order Country_Uruguay,0.00091
+Order Country_Nigeria,0.00089
+Order Country_Filipinas,0.00089
+Category Name_Fishing,0.00085
+Order Country_Pakistán,0.00085
+Order Region_North Africa,0.00076
+Order Region_Southern Europe,0.00075
+Order Country_Austria,0.00072
+Category Name_Golf Shoes,0.00072
+Category Name_Lacrosse,0.00069
+Order Country_Ghana,0.00068
+Order Region_Southern Africa,0.00067
+Order Country_Portugal,0.00065
+Order Country_Mozambique,0.00065
+Order Country_SudAfrica,0.00064
+Order Country_Myanmar (Birmania),0.00062
+Order Country_Tailandia,0.00061
+Order Country_Kazajistán,0.0006
+Category Name_Golf Gloves,0.00058
+Order Country_Países Bajos,0.00057
+Order Country_Marruecos,0.00057
+Order Country_Bélgica,0.00055
+Order Country_Senegal,0.00054
+Order Country_Hungría,0.00052
+Order Country_Tanzania,0.00051
+Order Country_Noruega,0.0005
+Category Name_Hunting & Shooting,0.0005
+Order Country_Rusia,0.00047
+Order Country_Corea del Sur,0.00047
+Category Name_Trade-In,0.00046
+Category Name_Golf Apparel,0.00045
+Order Country_Ucrania,0.00044
+Category Name_Baseball & Softball,0.00042
+Order Country_Finlandia,0.00042
+Order Country_Turkmenistán,0.00041
+Order Country_Níger,0.0004
+Order Country_Canada,0.00039
+Order Country_Irlanda,0.00038
+Order Country_República Checa,0.00037
+Order Country_Bangladés,0.00037
+Order Country_Zambia,0.00037
+Category Name_Girls' Apparel,0.00036
+Order Country_Benín,0.00034
+Category Name_Boxing & MMA,0.00033
+Order Country_Costa de Marfil,0.00033
+Order Country_Rumania,0.00033
+Order Country_Zimbabue,0.00032
+Order Country_Angola,0.00029
+Order Country_Japón,0.00028
+Category Name_Electronics,0.00028
+Order Country_Singapur,0.00027
+Order Country_Togo,0.00027
+Order Country_Moldavia,0.00027
+Order Country_Vietnam,0.00025
+Order Country_Camboya,0.00025
+Order Country_Kenia,0.00024
+Order Country_Sudán,0.00024
+Category Name_Tennis & Racquet,0.00023
+Order Region_Central Asia,0.00023
+Order Country_Croacia,0.00023
+Order Country_Hong Kong,0.00022
+Order Country_Kirguistán,0.00022
+Order Country_Jamaica,0.00022
+Order Country_Afganistán,0.00022
+Order Country_Israel,0.00021
+Department Name_Fitness,0.00021
+Order Country_Nepal,0.00021
+Order Country_Dinamarca,0.0002
+Order Country_Argelia,0.00019
+Order Country_Somalia,0.00017
+Category Name_Shop By Sport,0.00017
+Category Name_Golf Balls,0.00017
+Order Country_Bielorrusia,0.00017
+Order Country_Yemen,0.00016
+Order Country_Uganda,0.00016
+Category Name_Hockey,0.00015
+Order Country_Mongolia,0.00015
+Order Country_Mali,0.00014
+Category Name_Accessories,0.00014
+Order Country_Yibuti,0.00013
+Order Country_Madagascar,0.00013
+Order Country_Georgia,0.00012
+Order Country_Barbados,0.00011
+Order Country_Suiza,1e-04
+Order Country_Azerbaiyán,1e-04
+Category Name_Fitness Accessories,8e-05
+Order Country_Jordania,8e-05
+Order Country_Ruanda,8e-05
+Order Country_Lituania,7e-05
+Order Country_Bulgaria,7e-05
+Order Country_Siria,7e-05
+Order Country_Martinica,6e-05
+Order Country_Etiopía,6e-05
+Order Country_Taiwán,5e-05
+Order Country_Bosnia y Herzegovina,5e-05
+Order Country_Guadalupe,4e-05
+Order Country_Guinea,4e-05
+Order Country_Uzbekistán,3e-05
+Order Country_Libia,2e-05
+Order Country_Sierra Leona,2e-05
+Order Country_Papúa Nueva Guinea,1e-05
+Order Country_Qatar,1e-05
+Order Country_Albania,0.0
+Order Country_Tayikistán,0.0
+Order Country_Túnez,0.0
+Order Country_Serbia,0.0
+Order Country_Suazilandia,0.0
+Category Name_As Seen on  TV!,0.0
+Category Name_Baby ,0.0
+Order Country_Sri Lanka,0.0
+Order Country_Sudán del Sur,0.0
+Order Country_Surinam,0.0
+Order Country_Sáhara Occidental,0.0
+Order Country_Armenia,0.0
+Order Country_Guyana,0.0
+Order Country_Guinea Ecuatorial,0.0
+Order Country_Guayana Francesa,0.0
+Order Country_Grecia,0.0
+Order Country_Guinea-Bissau,0.0
+Order Country_Chipre,0.0
+Department Name_Health and Beauty ,0.0
+Order Country_Costa Rica,0.0
+Department Name_Pet Shop,0.0
+Department Name_Technology,0.0
+Order Country_Emiratos Árabes Unidos,0.0
+Order Country_Eslovaquia,0.0
+Order Country_Eritrea,0.0
+Order Country_Estonia,0.0
+Order Country_Eslovenia,0.0
+Order Country_Chad,0.0
+Order Country_Burkina Faso,0.0
+Order Country_Burundi,0.0
+Order Country_Bután,0.0
+Category Name_Pet Supplies,0.0
+Category Name_Soccer,0.0
+Category Name_Music,0.0
+Category Name_Men's Golf Clubs,0.0
+Category Name_Strength Training,0.0
+Category Name_Sporting Goods,0.0
+Category Name_Video Games,0.0
+Category Name_Toys,0.0
+Category Name_Women's Clothing,0.0
+Category Name_Women's Golf Clubs,0.0
+Department Name_Book Shop,0.0
+Department Name_Discs Shop,0.0
+Order Country_Belice,0.0
+Order Country_Baréin,0.0
+Order Country_Botsuana,0.0
+Order Country_Gabón,0.0
+Category Name_Golf Bags & Carts,0.0
+Category Name_Garden,0.0
+Category Name_Computers,0.0
+Category Name_Consumer Electronics,0.0
+Category Name_CDs ,0.0
+Category Name_Books ,0.0
+Category Name_Basketball,0.0
+Order Country_Kuwait,0.0
+Order Country_Liberia,0.0
+Order Country_Macedonia,0.0
+Order Country_Luxemburgo,0.0
+Order Country_Líbano,0.0
+Order Country_Lesoto,0.0
+Order Country_Laos,0.0
+Category Name_DVDs,0.0
+Category Name_Crafts,0.0
+Category Name_Cameras ,0.0
+Category Name_Children's Clothing,0.0
+Category Name_Kids' Golf Clubs,0.0
+Category Name_Health and Beauty,0.0
+Order Country_Namibia,0.0
+Order Country_Montenegro,0.0
+Order Country_Mauritania,0.0
+Category Name_Men's Clothing,0.0
+Order Country_República Centroafricana,0.0
+Order Country_Omán,0.0
+Order Country_República del Congo,0.0
+Order Country_República de Gambia,0.0

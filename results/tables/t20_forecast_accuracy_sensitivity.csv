@@ -1,0 +1,5 @@
+scenario,sigma_scale,holding_cost,stockout_units,fill_rate_pct,total_cost,holding_cost_reduction_vs_traditional_pct,total_cost_reduction_vs_traditional_pct
+current model,1.0,462258.27,126465.9,97.761,1296415.24,-23.41,1.42
+15% lower forecast error,0.85,461655.07,126465.9,97.761,1295712.05,-23.25,1.48
+30% lower forecast error,0.7,460930.35,126465.9,97.761,1294937.32,-23.06,1.54
+45% lower forecast error,0.55,460503.51,126463.6,97.761,1294450.58,-22.94,1.57

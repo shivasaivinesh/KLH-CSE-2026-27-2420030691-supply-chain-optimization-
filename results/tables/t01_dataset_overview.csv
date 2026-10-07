@@ -1,0 +1,4 @@
+dataset,rows,columns,numeric_cols,missing_cells,missing_pct,duplicate_rows,memory_mb
+DataCo,180519,49,31,0,0.0,0,271.18
+StoreDemand,913000,9,7,0,0.0,0,116.86
+OnlineRetail,1002800,13,6,226631,1.738,0,388.17

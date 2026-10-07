@@ -1,0 +1,87 @@
+{
+  "protocol": {
+    "split": "temporal 80/20 by order date",
+    "train_orders": 144415,
+    "test_orders": 36104,
+    "features": 275,
+    "excluded_for_leakage": [
+      "Delivery Status",
+      "Days for shipping (real)",
+      "shipping_delay",
+      "Order Status"
+    ],
+    "late_rate_train": 0.5487,
+    "late_rate_test": 0.5466
+  },
+  "classifiers": [
+    {
+      "model": "RandomForest",
+      "accuracy": 0.7168,
+      "precision": 0.8478,
+      "recall": 0.5874,
+      "f1": 0.694,
+      "roc_auc": 0.7692,
+      "pr_auc": 0.8332,
+      "tn": 14290,
+      "fp": 2081,
+      "fn": 8142,
+      "tp": 11591,
+      "fit_sec": 100.1
+    },
+    {
+      "model": "XGBoost",
+      "accuracy": 0.7018,
+      "precision": 0.8618,
+      "recall": 0.5411,
+      "f1": 0.6648,
+      "roc_auc": 0.7641,
+      "pr_auc": 0.8295,
+      "tn": 14659,
+      "fp": 1712,
+      "fn": 9055,
+      "tp": 10678,
+      "fit_sec": 12.8
+    },
+    {
+      "model": "LogisticRegression",
+      "accuracy": 0.6927,
+      "precision": 0.8419,
+      "recall": 0.539,
+      "f1": 0.6572,
+      "roc_auc": 0.7433,
+      "pr_auc": 0.8131,
+      "tn": 14373,
+      "fp": 1998,
+      "fn": 9097,
+      "tp": 10636,
+      "fit_sec": 2.2
+    }
+  ],
+  "best_classifier": "RandomForest",
+  "operational_threshold": {
+    "value": 0.3,
+    "f1": 0.7219,
+    "precision": 0.5927,
+    "recall": 0.9232
+  },
+  "lead_time_regression": [
+    {
+      "model": "RandomForest",
+      "MAE_days": 0.9599,
+      "RMSE_days": 1.2623,
+      "R2": 0.3897,
+      "sigma_lead_time_days": 1.2623,
+      "bias_days": -0.0027
+    },
+    {
+      "model": "XGBoost",
+      "MAE_days": 0.9897,
+      "RMSE_days": 1.2703,
+      "R2": 0.3819,
+      "sigma_lead_time_days": 1.2703,
+      "bias_days": -0.0021
+    }
+  ],
+  "sigma_lead_time_days": 1.2663,
+  "runtime_sec": 194.2
+}

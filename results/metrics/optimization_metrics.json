@@ -1,0 +1,172 @@
+{
+  "policy_comparison": {
+    "traditional_static": {
+      "holding_cost": 374565.31,
+      "ordering_cost": 324650.0,
+      "stockout_cost": 615936.7,
+      "total_cost": 1315152.01,
+      "orders": 6493,
+      "stockout_units": 146651.6,
+      "fill_rate_pct": 97.404,
+      "avg_inventory_units": 619.19,
+      "inventory_turns": 18095.3,
+      "demand_units": 5648226.0,
+      "z_used": 1.645
+    },
+    "static_full_control": {
+      "holding_cost": 399697.19,
+      "ordering_cost": 326600.0,
+      "stockout_cost": 579196.83,
+      "total_cost": 1305494.02,
+      "orders": 6532,
+      "stockout_units": 137904.0,
+      "fill_rate_pct": 97.558,
+      "avg_inventory_units": 660.73,
+      "inventory_turns": 16957.52,
+      "demand_units": 5648226.0,
+      "z_used": 1.645
+    },
+    "proposed_ml": {
+      "holding_cost": 462258.27,
+      "ordering_cost": 303000.0,
+      "stockout_cost": 531156.97,
+      "total_cost": 1296415.24,
+      "orders": 6060,
+      "stockout_units": 126465.9,
+      "fill_rate_pct": 97.761,
+      "avg_inventory_units": 764.15,
+      "inventory_turns": 14662.52,
+      "demand_units": 5648226.0,
+      "z_used": 1.645
+    }
+  },
+  "improvement_vs_traditional": {
+    "holding_cost_reduction": -23.41,
+    "total_cost_reduction": 1.42,
+    "stockout_units_reduction": 13.76,
+    "avg_inventory_reduction": -23.41,
+    "fill_rate_gain_pp": 0.357,
+    "inventory_turns_gain_pct": -23.41
+  },
+  "improvement_vs_control": {
+    "holding_cost_reduction": -15.65,
+    "total_cost_reduction": 0.7,
+    "stockout_units_reduction": 8.29,
+    "avg_inventory_reduction": -15.65,
+    "fill_rate_gain_pp": 0.203,
+    "inventory_turns_gain_pct": 0.0
+  },
+  "improvement_pct": {
+    "holding_cost_reduction": -23.41,
+    "total_cost_reduction": 1.42,
+    "stockout_units_reduction": 13.76,
+    "avg_inventory_reduction": -23.41,
+    "fill_rate_gain_pp": 0.357,
+    "inventory_turns_gain_pct": -23.41
+  },
+  "assumptions": {
+    "lead_time_days": 7,
+    "sigma_lead_time_days": 1.266,
+    "service_level": 0.95,
+    "z": 1.645,
+    "ordering_cost": 50.0,
+    "unit_cost": 12.0,
+    "annual_holding_rate": 0.2,
+    "stockout_penalty_per_unit": 4.2
+  },
+  "runtime_sec": 6.6,
+  "matched_service_comparison": {
+    "note": "proposed policy re-calibrated so that its fill rate matches the traditional policy; comparison is therefore at equal service",
+    "z_used": -0.55,
+    "traditional_fill_rate_pct": 97.404,
+    "proposed_fill_rate_pct": 97.42,
+    "holding_cost_reduction": -0.59,
+    "stockout_units_reduction": 0.64,
+    "total_cost_reduction": 2.12,
+    "avg_inventory_reduction": -0.59,
+    "detail": {
+      "holding_cost": 376762.29,
+      "ordering_cost": 298500.0,
+      "stockout_cost": 612015.31,
+      "total_cost": 1287277.6,
+      "orders": 5970,
+      "stockout_units": 145717.9,
+      "fill_rate_pct": 97.42,
+      "avg_inventory_units": 622.82,
+      "inventory_turns": 17989.78,
+      "demand_units": 5648226.0,
+      "z_used": -0.5499999999999992
+    }
+  },
+  "experiment_E1_forecast_only": {
+    "policy": "proposed (forecast, demand-variability formula only)",
+    "z_matched": -1.5,
+    "fill_rate_pct": 97.495,
+    "holding_cost_reduction_pct": -1.95,
+    "stockout_units_reduction_pct": 3.5,
+    "total_cost_reduction_pct": 3.07,
+    "avg_inventory_reduction_pct": -1.95
+  },
+  "experiment_E2_risk_aware": {
+    "policy": "proposed (forecast + measured lead-time variability)",
+    "z_matched": -0.55,
+    "fill_rate_pct": 97.42,
+    "holding_cost_reduction_pct": -0.59,
+    "stockout_units_reduction_pct": 0.64,
+    "total_cost_reduction_pct": 2.12,
+    "avg_inventory_reduction_pct": -0.59
+  },
+  "experiment_E3_lead_time_disruption": {
+    "disruption_sigma_L_days": 3.799,
+    "traditional_fill_rate_pct": 95.143,
+    "traditional_stockout_units": 274321.4,
+    "risk_aware_fill_rate_pct": 96.357,
+    "risk_aware_stockout_units": 205741.8,
+    "stockout_reduction_pct": 25.0,
+    "total_cost_reduction_pct": 13.49,
+    "traditional_total_cost": 1945034.43,
+    "risk_aware_total_cost": 1682618.21
+  },
+  "forecast_accuracy_sensitivity": [
+    {
+      "scenario": "current model",
+      "sigma_scale": 1.0,
+      "holding_cost": 462258.27,
+      "stockout_units": 126465.9,
+      "fill_rate_pct": 97.761,
+      "total_cost": 1296415.24,
+      "holding_cost_reduction_vs_traditional_pct": -23.41,
+      "total_cost_reduction_vs_traditional_pct": 1.42
+    },
+    {
+      "scenario": "15% lower forecast error",
+      "sigma_scale": 0.85,
+      "holding_cost": 461655.07,
+      "stockout_units": 126465.9,
+      "fill_rate_pct": 97.761,
+      "total_cost": 1295712.05,
+      "holding_cost_reduction_vs_traditional_pct": -23.25,
+      "total_cost_reduction_vs_traditional_pct": 1.48
+    },
+    {
+      "scenario": "30% lower forecast error",
+      "sigma_scale": 0.7,
+      "holding_cost": 460930.35,
+      "stockout_units": 126465.9,
+      "fill_rate_pct": 97.761,
+      "total_cost": 1294937.32,
+      "holding_cost_reduction_vs_traditional_pct": -23.06,
+      "total_cost_reduction_vs_traditional_pct": 1.54
+    },
+    {
+      "scenario": "45% lower forecast error",
+      "sigma_scale": 0.55,
+      "holding_cost": 460503.51,
+      "stockout_units": 126463.6,
+      "fill_rate_pct": 97.761,
+      "total_cost": 1294450.58,
+      "holding_cost_reduction_vs_traditional_pct": -22.94,
+      "total_cost_reduction_vs_traditional_pct": 1.57
+    }
+  ]
+}

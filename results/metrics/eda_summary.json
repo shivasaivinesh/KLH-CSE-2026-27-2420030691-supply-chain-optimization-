@@ -1,0 +1,183 @@
+{
+  "overview": [
+    {
+      "dataset": "DataCo",
+      "rows": 180519,
+      "columns": 49,
+      "numeric_cols": 31,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "duplicate_rows": 0,
+      "memory_mb": 271.18
+    },
+    {
+      "dataset": "StoreDemand",
+      "rows": 913000,
+      "columns": 9,
+      "numeric_cols": 7,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "duplicate_rows": 0,
+      "memory_mb": 116.86
+    },
+    {
+      "dataset": "OnlineRetail",
+      "rows": 1002800,
+      "columns": 13,
+      "numeric_cols": 6,
+      "missing_cells": 226631,
+      "missing_pct": 1.738,
+      "duplicate_rows": 0,
+      "memory_mb": 388.17
+    }
+  ],
+  "outliers": [
+    {
+      "column": "Sales",
+      "q1": 119.98,
+      "q3": 299.95,
+      "iqr": 179.97,
+      "lower_fence": -149.975,
+      "upper_fence": 569.905,
+      "outliers": 488,
+      "outlier_pct": 0.27
+    },
+    {
+      "column": "Order Item Quantity",
+      "q1": 1.0,
+      "q3": 3.0,
+      "iqr": 2.0,
+      "lower_fence": -2.0,
+      "upper_fence": 6.0,
+      "outliers": 0,
+      "outlier_pct": 0.0
+    },
+    {
+      "column": "Order Item Profit Ratio",
+      "q1": 0.08,
+      "q3": 0.36,
+      "iqr": 0.28,
+      "lower_fence": -0.34,
+      "upper_fence": 0.78,
+      "outliers": 17300,
+      "outlier_pct": 9.58
+    },
+    {
+      "column": "Days for shipping (real)",
+      "q1": 2.0,
+      "q3": 5.0,
+      "iqr": 3.0,
+      "lower_fence": -2.5,
+      "upper_fence": 9.5,
+      "outliers": 0,
+      "outlier_pct": 0.0
+    },
+    {
+      "column": "Order Item Discount Rate",
+      "q1": 0.04,
+      "q3": 0.16,
+      "iqr": 0.12,
+      "lower_fence": -0.14,
+      "upper_fence": 0.34,
+      "outliers": 0,
+      "outlier_pct": 0.0
+    },
+    {
+      "column": "Product Price",
+      "q1": 50.0,
+      "q3": 199.99,
+      "iqr": 149.99,
+      "lower_fence": -174.985,
+      "upper_fence": 424.975,
+      "outliers": 2048,
+      "outlier_pct": 1.13
+    }
+  ],
+  "class_balance": {
+    "0": 81542,
+    "1": 98977
+  },
+  "daily_demand_trend": {
+    "first_90d_mean": 17018.92,
+    "last_90d_mean": 27315.66,
+    "peak_date": "2017-07-02",
+    "peak_units": 44936
+  },
+  "risk_correlations": {
+    "Days for shipping (real)": 0.401,
+    "Days for shipment (scheduled)": -0.369,
+    "Order Profit Per Order": -0.004,
+    "Sales": -0.004,
+    "order_month": 0.003,
+    "Product Price": -0.002,
+    "order_dow": 0.001,
+    "Order Item Discount Rate": 0.0,
+    "Order Item Quantity": -0.0
+  },
+  "seasonality_index": {
+    "1": -209289.7,
+    "2": -211929.0,
+    "3": -36894.7,
+    "4": 49391.2,
+    "5": 125074.0,
+    "6": 157835.0,
+    "7": 233183.3,
+    "8": 111426.3,
+    "9": 24726.4,
+    "10": -21783.3,
+    "11": 10714.6,
+    "12": -205175.0
+  },
+  "trend_growth_pct": 47.44,
+  "trend_strength": 0.981,
+  "seasonal_strength": 0.994,
+  "calendar_effects": {
+    "weekend=False,holiday=False": 48.96,
+    "weekend=False,holiday=True": 51.42,
+    "weekend=True,holiday=False": 60.39,
+    "weekend=True,holiday=True": 62.97
+  },
+  "abc": [
+    {
+      "ABC": "A",
+      "skus": 1039,
+      "revenue": 15733157.120000001,
+      "revenue_share_pct": 79.98,
+      "sku_share_pct": 21.21
+    },
+    {
+      "ABC": "B",
+      "skus": 1281,
+      "revenue": 2954039.14,
+      "revenue_share_pct": 15.02,
+      "sku_share_pct": 26.15
+    },
+    {
+      "ABC": "C",
+      "skus": 2579,
+      "revenue": 984216.457,
+      "revenue_share_pct": 5.0,
+      "sku_share_pct": 52.64
+    }
+  ],
+  "rfm": [
+    {
+      "segment": "At risk",
+      "customers": 1732,
+      "revenue": 500499.33,
+      "revenue_share_pct": 2.93
+    },
+    {
+      "segment": "Champions",
+      "customers": 2292,
+      "revenue": 14832654.35,
+      "revenue_share_pct": 86.85
+    },
+    {
+      "segment": "Loyal",
+      "customers": 1837,
+      "revenue": 1744540.82,
+      "revenue_share_pct": 10.22
+    }
+  ]
+}
